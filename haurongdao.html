@@ -3,34 +3,42 @@
 <head>
   <meta charset="UTF-8">
   <title>5x5 数字华容道</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
+    html, body {
+      overflow: hidden;
+      height: 100%;
+    }
+
     body {
       font-family: sans-serif;
       background: #f2f2f2;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      height: 100vh;
+      justify-content: flex-start;
+      min-height: 100vh;
       margin: 0;
+      padding: 20px;
     }
 
     .board {
       display: grid;
-      grid-template-columns: repeat(5, 70px);
-      grid-template-rows: repeat(5, 70px);
-      gap: 5px;
+      grid-template-columns: repeat(5, 1fr);
+      grid-template-rows: repeat(5, 1fr);
+      gap: 1.5vw;
+      width: 90vw;
+      max-width: 400px;
+      aspect-ratio: 1 / 1;
       margin-top: 20px;
     }
 
     .tile {
-      width: 70px;
-      height: 70px;
       background-color: #ffffff;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 24px;
+      font-size: 5vw;
       font-weight: bold;
       border: 2px solid #ccc;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -45,8 +53,9 @@
     }
 
     button {
-      padding: 10px 20px;
-      font-size: 16px;
+      padding: 12px 24px;
+      font-size: 4vw;
+      max-width: 200px;
       background-color: #007bff;
       color: white;
       border: none;
@@ -62,8 +71,22 @@
 
     #timer {
       margin-top: 10px;
-      font-size: 18px;
+      font-size: 4vw;
       color: #333;
+    }
+
+    @media (min-width: 768px) {
+      .tile {
+        font-size: 24px;
+      }
+
+      button {
+        font-size: 16px;
+      }
+
+      #timer {
+        font-size: 18px;
+      }
     }
   </style>
 </head>
@@ -73,7 +96,7 @@
   <div id="timer">⏱️ 时间：0 秒</div>
   <div class="board" id="board"></div>
 
-  <!-- 嵌入点击音效 -->
+  <!-- 点击音效 -->
   <audio id="clickSound" preload="auto">
     <source src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAESsAACJWAAACABAAZGF0YQAAADoAAAA7AAAAPAAAADkAAAA6AAAANQAAADMAAAAzAAAAMAAAAC4AAAAtAAAALAAAACoAAAAoAAAANQAA" type="audio/wav">
   </audio>
@@ -93,7 +116,6 @@
       const numbers = Array.from({length: totalTiles - 1}, (_, i) => i + 1);
       numbers.push(null); // 空格
 
-      // 打乱顺序
       do {
         shuffle(numbers);
       } while (!isSolvable(numbers));
